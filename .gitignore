@@ -1,0 +1,15 @@
+# Site (Vite)
+site/node_modules/
+site/dist/
+site/.vite/
+
+# OS / editor
+.DS_Store
+*.log
+.env
+.env.*
+
+.agents/
+.claude/
+agent/
+skills-lock.json

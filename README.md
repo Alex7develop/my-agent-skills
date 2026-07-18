@@ -11,17 +11,20 @@ Codex, Copilot и др.), закрывающих базовый цикл раз�
 Через открытую CLI `skills` (работает с 70+ агентами):
 
 ```bash
-# поставить все навыки
-npx skills add ваш_логин/my-agent-skills
+# поставить все навыки (интерактивный выбор)
+npx skills add Alex7develop/my-agent-skills
+
+# поставить все навыки сразу, без вопросов
+npx skills add Alex7develop/my-agent-skills --all
 
 # посмотреть список перед установкой
-npx skills add ваш_логин/my-agent-skills --list
+npx skills add Alex7develop/my-agent-skills --list
 
 # поставить только один навык
-npx skills add ваш_логин/my-agent-skills --skill code-review
+npx skills add Alex7develop/my-agent-skills --skill code-review
 
 # неинтерактивно, в конкретного агента (для CI)
-npx skills add ваш_логин/my-agent-skills --skill test-driven-development -a claude-code -y
+npx skills add Alex7develop/my-agent-skills --skill test-driven-development -a claude-code -y
 ```
 
 ## Навыки в наборе
