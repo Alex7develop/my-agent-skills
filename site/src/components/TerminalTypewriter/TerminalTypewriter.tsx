@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { INSTALL_ALL_CMD } from '../../data/skills';
+import { CheckIcon } from '../CheckIcon';
+import { CopyIcon } from '../CopyIcon';
 
 const blink = keyframes`
   0%, 49% { opacity: 1; }
@@ -20,7 +22,7 @@ const TitleBar = styled.div`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.7rem 0.9rem;
+  padding: 0.55rem 0.75rem 0.55rem 0.9rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
@@ -33,9 +35,38 @@ const Dot = styled.span`
 
 const Title = styled.span`
   margin-left: 0.4rem;
+  margin-right: auto;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: 0.75rem;
+`;
+
+const CopyButton = styled.button<{ $copied: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid transparent;
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: transparent;
+  color: ${({ theme, $copied }) =>
+    $copied ? theme.colors.accent : theme.colors.textSecondary};
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+    background: ${({ theme }) => theme.colors.bg};
+    border-color: ${({ theme }) => theme.colors.border};
+  }
+
+  &:active {
+    color: ${({ theme }) => theme.colors.accentDim};
+  }
 `;
 
 const Body = styled.pre`
@@ -74,16 +105,19 @@ function prefersReducedMotion(): boolean {
 
 interface TerminalTypewriterProps {
   command?: string;
+  animate?: boolean;
 }
 
 export function TerminalTypewriter({
   command = INSTALL_ALL_CMD,
+  animate = true,
 }: TerminalTypewriterProps) {
-  const [text, setText] = useState('');
-  const [done, setDone] = useState(false);
+  const [text, setText] = useState(animate ? '' : command);
+  const [done, setDone] = useState(!animate);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (!animate || prefersReducedMotion()) {
       setText(command);
       setDone(true);
       return;
@@ -103,7 +137,17 @@ export function TerminalTypewriter({
     }, 28);
 
     return () => window.clearInterval(id);
-  }, [command]);
+  }, [animate, command]);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   return (
     <Shell aria-label="Команда установки">
@@ -112,6 +156,15 @@ export function TerminalTypewriter({
         <Dot aria-hidden />
         <Dot aria-hidden />
         <Title>terminal</Title>
+        <CopyButton
+          type="button"
+          onClick={handleCopy}
+          $copied={copied}
+          aria-label={copied ? 'Скопировано' : 'Скопировать команду'}
+          title={copied ? 'Скопировано' : 'Скопировать'}
+        >
+          {copied ? <CheckIcon /> : <CopyIcon />}
+        </CopyButton>
       </TitleBar>
       <Body>
         <Prompt>$ </Prompt>

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -8,10 +7,10 @@ import {
 } from '../data/skills';
 import {
   Container,
-  NativeButton,
   PhaseBadge,
   SectionLabel,
 } from '../components/shared';
+import { TerminalTypewriter } from '../components/TerminalTypewriter/TerminalTypewriter';
 
 const Page = styled.div`
   padding: 3rem 0 4.5rem;
@@ -58,10 +57,6 @@ const InstallBlock = styled.div`
   align-items: flex-start;
   gap: 0.85rem;
   max-width: 40rem;
-  padding: 1.25rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.bgElevated};
 `;
 
 const InstallLabel = styled.p`
@@ -72,39 +67,15 @@ const InstallLabel = styled.p`
   text-transform: uppercase;
 `;
 
-const Command = styled.code`
-  display: block;
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.sm};
-  background: ${({ theme }) => theme.colors.bg};
-  color: ${({ theme }) => theme.colors.accent};
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.85rem;
-  word-break: break-all;
-`;
-
 export function SkillPage() {
   const { slug = '' } = useParams();
   const skill = getSkillBySlug(slug);
-  const [copied, setCopied] = useState(false);
 
   if (!skill) {
     return <Navigate to="/skills" replace />;
   }
 
   const command = installSkillCmd(skill.slug);
-
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(command);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      setCopied(false);
-    }
-  }
 
   return (
     <Page>
@@ -117,10 +88,7 @@ export function SkillPage() {
         <Description>{skill.description}</Description>
         <InstallBlock>
           <InstallLabel>Установка</InstallLabel>
-          <Command>{command}</Command>
-          <NativeButton type="button" onClick={handleCopy}>
-            {copied ? 'Скопировано' : 'Скопировать команду'}
-          </NativeButton>
+          <TerminalTypewriter command={command} animate={false} />
         </InstallBlock>
       </Container>
     </Page>

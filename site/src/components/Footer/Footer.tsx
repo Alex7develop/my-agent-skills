@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  GITHUB_URL,
-  INSTALL_ALL_CMD,
-  SKILLS_SH_URL,
-} from '../../data/skills';
+import { GITHUB_URL, INSTALL_ALL_CMD, SKILLS_SH_URL } from '../../data/skills';
 import { Container } from '../shared';
+import { TerminalTypewriter } from '../TerminalTypewriter/TerminalTypewriter';
 
 const Wrap = styled.footer`
   padding: 3rem 0 2.5rem;
@@ -16,18 +13,6 @@ const Wrap = styled.footer`
 const Inner = styled(Container)`
   display: grid;
   gap: 1.75rem;
-`;
-
-const Command = styled.code`
-  display: block;
-  padding: 0.9rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.sm};
-  background: ${({ theme }) => theme.colors.bg};
-  color: ${({ theme }) => theme.colors.accent};
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: 0.85rem;
-  word-break: break-all;
 `;
 
 const Links = styled.div`
@@ -56,7 +41,7 @@ const RouterLink = styled(Link)`
   }
 `;
 
-const Copy = styled.p`
+const Copyright = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.85rem;
 `;
@@ -67,7 +52,7 @@ export function Footer() {
   return (
     <Wrap>
       <Inner>
-        <Command>{INSTALL_ALL_CMD}</Command>
+        <TerminalTypewriter command={INSTALL_ALL_CMD} animate={false} />
         <Links>
           <FooterLink href={GITHUB_URL} target="_blank" rel="noreferrer">
             GitHub
@@ -84,7 +69,7 @@ export function Footer() {
           </FooterLink>
           <RouterLink to="/skills">Skills</RouterLink>
         </Links>
-        <Copy>© {year} my-agent-skills · MIT</Copy>
+        <Copyright>© {year} my-agent-skills · MIT</Copyright>
       </Inner>
     </Wrap>
   );
