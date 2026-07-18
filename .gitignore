@@ -9,7 +9,8 @@ site/.vite/
 .env
 .env.*
 
+# Local `npx skills add` install clutter (source of truth is skills/)
 .agents/
-.claude/
+.claude/skills/
 agent/
 skills-lock.json

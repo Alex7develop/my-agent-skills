@@ -30,6 +30,19 @@
 
 Навыки также подключаются автоматически по контексту: новая фича → `spec-first`, «не работает» → `systematic-debugging`, «закоммить» → `commit-and-pr`.
 
+### Slash commands
+
+| Что делаете | Команда | Навык |
+|---|---|---|
+| Спека перед кодом | `/spec` | `spec-first` |
+| Red → Green → Refactor | `/tdd` | `test-driven-development` |
+| Системная отладка | `/debug` | `systematic-debugging` |
+| Безопасный рефакторинг | `/refactor` | `safe-refactoring` |
+| Ревью перед мержем | `/review` | `code-review` |
+| Коммит / PR | `/commit` | `commit-and-pr` |
+
+Команды лежат в `commands/` и `.claude/commands/`. Подробнее: [docs/getting-started.md](docs/getting-started.md).
+
 ---
 
 ## Quick Start
@@ -122,17 +135,22 @@ npx skills add Alex7develop/my-agent-skills \
 ```
 my-agent-skills/
 ├── README.md
-├── docs/
-│   └── hero.jpg                            # Превью для README
-├── skills/
-│   ├── spec-first/SKILL.md                 # Перед кодом
-│   ├── test-driven-development/SKILL.md    # Реализация
-│   ├── systematic-debugging/SKILL.md       # Реализация
-│   ├── safe-refactoring/SKILL.md           # Реализация
-│   ├── code-review/SKILL.md                # Перед мержем
-│   └── commit-and-pr/SKILL.md              # Перед мержем
-└── site/                                   # Landing / каталог навыков
+├── LICENSE
+├── CONTRIBUTING.md
+├── AGENTS.md / CLAUDE.md                   # Гайд для агентов в этом репо
+├── plugin.json                             # Манифест плагина
+├── .claude-plugin/ / .codex-plugin/        # Нативные интеграции
+├── .claude/commands/                       # Slash commands (Claude Code)
+├── commands/                               # Те же команды (общий формат)
+├── skills/                                 # 6 навыков (источник истины)
+├── references/                             # Короткие чек-листы
+├── docs/                                   # Setup + anatomy + hero
+├── scripts/validate-skills.sh              # CI-проверка frontmatter
+├── .github/workflows/validate.yml
+└── site/                                   # Landing / каталог
 ```
+
+Почему у [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) «больше папок»: там 24 навыка, personas, evals, hooks и setup под много инструментов. Этот репозиторий специально компактный — тот же каркас (skills, commands, docs, references, plugins, CI), но под 6 фокусных навыков без лишнего.
 
 ---
 
@@ -146,15 +164,19 @@ AI-агенты по умолчанию идут по короткому пут�
 
 ## Как расширять
 
-1. Скопируйте любую папку из `skills/` как шаблон.
-2. Замените `name` / `description` и тело процесса.
-3. Проверьте, что описание однозначно триггерится и не пересекается с другими навыками (иначе агент будет путаться).
-4. Закоммитьте — навык сразу доступен через `npx skills add`.
+См. [CONTRIBUTING.md](CONTRIBUTING.md) и [docs/skill-anatomy.md](docs/skill-anatomy.md).
 
-Навык должен быть **конкретным** (шаги, а не советы), **проверяемым** (понятно, когда он «готов»), **боевым** (из реальной практики) и **коротким** (только то, что направляет агента).
+```bash
+./scripts/validate-skills.sh
+```
+
+1. Скопируйте папку из `skills/` как шаблон.
+2. Замените `name` / `description` и тело процесса.
+3. Убедитесь, что триггеры не пересекаются с соседними навыками.
+4. Закоммитьте — навык доступен через `npx skills add`.
 
 ---
 
 ## Лицензия
 
-MIT — используйте эти навыки в своих проектах, командах и инструментах.
+[MIT](LICENSE) — используйте эти навыки в своих проектах, командах и инструментах.

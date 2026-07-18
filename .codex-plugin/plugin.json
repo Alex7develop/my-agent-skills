@@ -1,0 +1,5 @@
+{
+  "name": "my-agent-skills",
+  "description": "Практики senior-разработчика для AI-агентов — 6 skills от спеки до PR.",
+  "skills": "./skills"
+}

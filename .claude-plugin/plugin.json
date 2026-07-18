@@ -1,0 +1,12 @@
+{
+  "name": "my-agent-skills",
+  "description": "Практики senior-разработчика для AI-агентов — цикл от спеки до PR (6 skills).",
+  "author": {
+    "name": "Alex7develop"
+  },
+  "homepage": "https://github.com/Alex7develop/my-agent-skills",
+  "repository": "https://github.com/Alex7develop/my-agent-skills",
+  "license": "MIT",
+  "commands": ["./.claude/commands", "./commands"],
+  "skills": "./skills"
+}
